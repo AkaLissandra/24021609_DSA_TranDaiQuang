@@ -1,76 +1,58 @@
-
 #include <iostream>
-#include <vector>
 using namespace std;
 
-vector<int> merge(vector<int> a, vector<int> b) {
-    vector<int> result;
+int temp[1000];
+int a[1000];
 
-    int sz1 = a.size();
-    int sz2 = b.size();
-    int sz = sz1 + sz2;
+void merge(int a[], int left, int mid, int right) {
+    int x = left;
+    int y = mid + 1;
+    int z = left;
 
-    int i1 = 0;
-    int i2 = 0;
-
-    for (int i = 0; i < sz; i++) {
-        if (i1 >= sz1) {
-            result.push_back(b[i2]);
-            i2++;
+    while (z <= right) {
+        if (y > right) {
+            temp[z] = a[x];
+            x++;
+        } else if (x > mid) {
+            temp[z] = a[y];
+            y++;
+        } else if (a[x] <= a[y]) {
+            temp[z] = a[x];
+            x++;
+        } else {
+            temp[z] = a[y];
+            y++;
         }
-        else if (i2 >= sz2) {
-            result.push_back(a[i1]);
-            i1++;
-        }
-        else if (a[i1] <= b[i2]) {
-            result.push_back(a[i1]);
-            i1++;
-        }
-        else {
-            result.push_back(b[i2]);
-            i2++;
-        }
+        z++;
     }
 
-    return result;
+    for (int i = left; i <= right; i++) {
+        a[i] = temp[i];
+    }
 }
 
-vector<int> mergeSort(vector<int> a) {
-    
-    if (a.size() <= 1) {
-        return a;
+void mergeSort(int a[], int left, int right) {
+    if (left == right) {
+        return;
     }
 
-    
-    int sz = a.size();
-    vector<int> left;
-    vector<int> right;
+    int mid = (left + right) / 2;
 
-    for (int i = 0; i < sz; i++) {
-        if (i < sz / 2) {
-            left.push_back(a[i]);
-        }
-        else {
-            right.push_back(a[i]);
-        }
-    }
+    mergeSort(a, left, mid);
+    mergeSort(a, mid + 1, right);
 
-
-    left = mergeSort(left);
-    right = mergeSort(right);
-
-    
-    return merge(left, right);
+    merge(a, left, mid, right);
 }
 
 int main() {
-    vector<int> a = {7, 2, 6, 1, 9, 3};
-
-    a = mergeSort(a);
-
-    for (int x : a) {
-        cout << x << " ";
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
     }
-
+    mergeSort(a, 0, n - 1);
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
     return 0;
 }
