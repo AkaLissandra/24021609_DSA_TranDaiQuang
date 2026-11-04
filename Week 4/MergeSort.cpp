@@ -1,43 +1,39 @@
 #include <iostream>
 using namespace std;
 
-int temp[1000];
 int a[1000];
+int t[1000];
 
 void merge(int a[], int left, int mid, int right) {
     int x = left;
     int y = mid + 1;
-    int z = left;
-
-    while (z <= right) {
-        if (y > right) {
-            temp[z] = a[x];
-            x++;
-        } else if (x > mid) {
-            temp[z] = a[y];
+    for (int i = left; i <= right; i++) {
+        if (x > mid) {
+            t[i] = a[y];
             y++;
+        } else if (y > right) {
+            t[i] = a[x];
+            x++;
         } else if (a[x] <= a[y]) {
-            temp[z] = a[x];
+            t[i] = a[x];
             x++;
         } else {
-            temp[z] = a[y];
+            t[i] = a[y];
             y++;
         }
-        z++;
     }
 
     for (int i = left; i <= right; i++) {
-        a[i] = temp[i];
+        a[i] = t[i];
     }
 }
 
 void mergeSort(int a[], int left, int right) {
-    if (left == right) {
+    if (left >= right) {
         return;
     }
 
     int mid = (left + right) / 2;
-
     mergeSort(a, left, mid);
     mergeSort(a, mid + 1, right);
 

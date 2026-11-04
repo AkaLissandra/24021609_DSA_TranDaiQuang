@@ -1,19 +1,18 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int a[1000];
+
 int partition(int a[], int left, int right) {
     int pivot = a[right];
-
     int x = left;
-    int y = right - 1;
 
-    while (x <= y) {
-        if (a[x] > pivot && a[y] < pivot) {
-            swap(a[x], a[y]);
-        }
-        if (a[x] <= pivot) {
+    for (int i = left; i <= right - 1; i++) {
+        if (a[i] < pivot) {
+            swap(a[i], a[x]);
             x++;
         }
-        if (a[y] >= pivot) {
-            y--;
-        } 
     }
 
     swap(a[right], a[x]);
@@ -22,12 +21,25 @@ int partition(int a[], int left, int right) {
 }
 
 void quickSort(int a[], int left, int right) {
-    if (right <= left) {
+    if (left >= right) {
         return;
     }
 
-    int p = partition(a, left, right);
+    int pivotIndex = partition(a, left, right);
 
-    quickSort(a, left, p - 1);
-    quickSort(a, p + 1, right);
+    quickSort(a, left, pivotIndex - 1);
+    quickSort(a, pivotIndex + 1, right);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    quickSort(a, 0, n - 1);
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    return 0;
 }
