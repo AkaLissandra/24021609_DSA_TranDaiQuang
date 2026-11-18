@@ -17,7 +17,7 @@ public:
 class Stack {
 public:
     Node* head;
-    int n = 0;
+    int n;
 
     Stack() {
         head = nullptr;
